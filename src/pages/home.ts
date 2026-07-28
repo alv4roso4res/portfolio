@@ -15,7 +15,7 @@ export function renderHome(): string {
         <h1 class="title shake-text">Alvaro | Web Developer</h1>
 
         <p class="intro shake-text">
-          Oi, me chamo Alvaro Paiva, desenvolvedor web com foco em backend e automação, do Rio de Janeiro - Brasil.
+          Oi, me chamo Alvaro Paiva, desenvolvedor fullstack com foco em desenvolvimento web e automação, do Rio de Janeiro - Brasil.
         </p>
 
         <div class="groups">
