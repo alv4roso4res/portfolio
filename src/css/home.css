@@ -153,6 +153,31 @@ main.container {
     margin-left: 0;
 }
 
+/* Espaçamento próprio da home. contact.css e projects.css repetem .intro,
+   .group-title e .links li sem escopo e são importados depois, então estas
+   regras precisam do .home-content para vencer por especificidade. */
+.home-content .intro {
+    margin-bottom: 1rem;
+}
+
+.home-content .groups {
+    margin-top: 1.25rem;
+}
+
+.home-content .group-title {
+    margin-top: 1rem;
+    margin-bottom: 0.35rem;
+}
+
+.home-content .links li {
+    margin: 0.3rem 0;
+}
+
+/* link de projetos: linha única, sem título de grupo acima */
+.home-content .projects-link {
+    margin-top: 0.15rem;
+}
+
 @media (min-width: 768px) {
     main.container {
         width: 72%;

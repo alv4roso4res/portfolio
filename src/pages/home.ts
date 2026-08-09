@@ -1,8 +1,6 @@
 import {
   githubIcon,
   instagramIcon,
-  cakeIcon,
-  lessonplansIcon,
   linkedinIcon,
   resumeIcon,
   freelanceIcon,
@@ -11,7 +9,7 @@ import {
 export function renderHome(): string {
   return `
     <main class="container">
-      <section class="content">
+      <section class="content home-content">
         <h1 class="title shake-text">Alvaro | Web Developer</h1>
 
         <p class="intro shake-text">
@@ -33,24 +31,6 @@ export function renderHome(): string {
                 <a class="link" href="https://instagram.com/1alvaropaiva" target="_blank" rel="noopener noreferrer">
                   <span class="label shake-text">instagram</span>
                   <span class="icon">${instagramIcon()}</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div class="group">
-            <h2 class="group-title shake-text">Alguns dos meus projetos:</h2>
-            <ul class="links">
-              <li>
-                <a class="link" href="https://anajulia-niver.vercel.app/" target="_blank">
-                  <span class="label shake-text">Ana Júlia - 1 aninho</span>
-                  <span class="icon">${cakeIcon()}</span>
-                </a>
-              </li>
-              <li>
-                <a class="link" href="https://lessonplans.vercel.app/" target="_blank">
-                  <span class="label shake-text">Gerador de Planos de Aula</span>
-                  <span class="icon">${lessonplansIcon()}</span>
                 </a>
               </li>
             </ul>

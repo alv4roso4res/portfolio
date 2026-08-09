@@ -1,0 +1,189 @@
+:root {
+  --view-transition: 180ms;
+  --nav-gutter: clamp(1rem, 4vw, 2.5rem);
+  --nav-width: 7rem;
+  --nav-bar-height: 2.75rem;
+  --content-width: 40rem;
+  --icon-nudge: -0.05em;
+}
+
+/* ---------- shell: nav + view ---------- */
+
+.shell {
+  height: 100%;
+  min-height: 0;
+}
+
+/* ---------- view (única parte trocada a cada rota) ---------- */
+
+.view {
+  height: 100%;
+  min-height: 0;
+  padding-top: var(--nav-bar-height);
+  opacity: 1;
+  /* sem transform em repouso: um transform aqui viraria containing block
+     para o position: fixed do modal de projetos */
+  transform: none;
+  transition: opacity var(--view-transition) ease-out,
+    transform var(--view-transition) ease-out;
+}
+
+.view.is-leaving {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+/* estado inicial da entrada: aplicado sem transição, removido no frame seguinte */
+.view.is-entering {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: none;
+}
+
+/* ---------- links com ícone ---------- */
+
+/* o align-items: center do .link centraliza o ícone na caixa da linha, que é
+   mais alta que as letras (line-height 1.725) e deixa o ícone alto demais.
+   O empurrão devolve o ícone para a altura do texto ao lado. */
+.link .icon {
+  display: inline-flex;
+  align-items: center;
+  transform: translateY(var(--icon-nudge));
+}
+
+/* ---------- nav persistente: barra no topo (mobile) ---------- */
+
+.sidenav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  padding: 0.4rem 1rem;
+}
+
+.sidenav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidenav-item {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.sidenav-item + .sidenav-item::before {
+  content: '·';
+  margin: 0 0.5rem;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+  opacity: 0.35;
+}
+
+.sidenav-link {
+  display: inline-block;
+  color: #fff;
+  text-decoration: none;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  padding: 0.3rem 0;
+  opacity: 0.5;
+  cursor: default;
+  transition: opacity 160ms ease-out;
+}
+
+.sidenav-link:hover,
+.sidenav-link.active {
+  opacity: 1;
+}
+
+.sidenav-link:focus-visible {
+  outline: 1px solid #fff;
+  outline-offset: 3px;
+  opacity: 1;
+}
+
+/* ---------- nav persistente: coluna à esquerda (desktop) ---------- */
+
+@media (min-width: 768px) {
+  /* nav e conteúdo deixam de ser dois blocos soltos: viram itens de uma mesma
+     linha centralizada, com o gutter como única distância entre eles */
+  .shell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--nav-gutter);
+    padding: 0 var(--nav-gutter);
+  }
+
+  .sidenav {
+    position: static;
+    flex: 0 0 var(--nav-width);
+    width: auto;
+    padding: 0;
+    justify-content: flex-start;
+    transform: none;
+  }
+
+  .sidenav-list {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.45rem;
+  }
+
+  .sidenav-item + .sidenav-item::before {
+    content: none;
+  }
+
+  .sidenav-link {
+    position: relative;
+    padding: 0.15rem 0 0.15rem 0.85rem;
+  }
+
+  .sidenav-link.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 1px;
+    height: 0.85em;
+    transform: translateY(-50%);
+    background-color: currentColor;
+  }
+
+  /* largura da coluna de conteúdo: encolhe antes de empurrar a nav */
+  .view {
+    flex: 0 1 var(--content-width);
+    min-width: 0;
+    padding-top: 0;
+  }
+
+  /* dentro do bloco, o container ocupa a coluna inteira — quem centraliza o
+     conjunto agora é a .shell, não o margin auto do container */
+  .view main.container {
+    width: 100%;
+  }
+}
+
+/* ---------- acessibilidade: sem movimento ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .view,
+  .view.is-leaving,
+  .view.is-entering {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .sidenav-link {
+    transition: none;
+  }
+}

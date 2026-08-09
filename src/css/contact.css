@@ -209,20 +209,6 @@ main.container {
   opacity: 1;
 }
 
-.back-link {
-  margin-top: 1rem;
-  display: inline-block;
-  color: #fff;
-  text-decoration: none;
-  font-size: clamp(0.85rem, 2.5vw, 0.95rem);
-  opacity: 0.8;
-  cursor: default;
-}
-
-.back-link:hover {
-  opacity: 1;
-}
-
 @media (min-width: 768px) {
   main.container {
     width: 72%;

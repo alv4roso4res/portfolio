@@ -35,8 +35,6 @@ export function renderContact(): string {
             </button>
           </form>
         </div>
-
-        <a href="/" class="back-link shake-text">voltar</a>
       </section>
     </main>
   `;
