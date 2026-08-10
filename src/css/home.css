@@ -4,8 +4,14 @@
     box-sizing: border-box;
 }
 
+/* No mobile, 100% (como 100vh) resolve contra o viewport grande — o de barra de
+   URL escondida — que é maior que a área visível e joga o topo e o rodapé para
+   trás das barras do navegador. Como o body não rola, a barra nunca colapsa e a
+   área visível é sempre o viewport pequeno: svh. A linha com 100% fica de
+   fallback para navegadores sem svh. */
 html, body, #app {
     height: 100%;
+    height: 100svh;
     cursor: default;
 }
 

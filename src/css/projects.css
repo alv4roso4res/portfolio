@@ -150,6 +150,7 @@ main.container {
   margin-top: 0.25rem;
   padding: 0.25rem;
   max-height: min(48vh, 26rem);
+  max-height: min(48svh, 26rem);
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -198,6 +199,10 @@ main.container {
 .project-modal {
   position: fixed;
   inset: 0;
+  /* altura explícita em svh: sem ela o overlay herda o viewport grande e o
+     painel centralizado dentro dele fica por baixo das barras do navegador */
+  height: 100%;
+  height: 100svh;
   z-index: 10;
   display: flex;
   align-items: center;
@@ -231,8 +236,12 @@ main.container {
    * altura definida (não max-height): a mídia é absoluta e não contribui
    * altura, então sem uma altura definida aqui não há sobra para o flex
    * distribuir e o bloco de mídia encolhe até o min-height.
+   *
+   * 100% do overlay em vez de vh: assim o painel nunca passa da área visível
+   * do navegador, e continua definida o bastante para o flex distribuir.
    */
-  height: min(92vh, 46rem);
+  height: 100%;
+  max-height: 46rem;
   padding: clamp(0.75rem, 2.5vw, 1.25rem);
   background-color: #1b1b1b;
   border: 1px solid #2f2f2f;
@@ -510,6 +519,7 @@ main.container {
 
   .projects-list {
     max-height: min(52vh, 28rem);
+    max-height: min(52svh, 28rem);
   }
 }
 
