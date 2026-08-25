@@ -90,9 +90,10 @@ export const projects: Project[] = [
         alt: 'Página inicial do site de aniversário da Ana Júlia',
       },
       {
-        kind: 'image',
-        src: '/projects/anajulia-niver/convite.png',
-        alt: 'Seção do convite com data e local da festa',
+        kind: 'video',
+        src: '/projects/anajulia-niver/demo.mp4',
+        poster: '/projects/anajulia-niver/hero.png',
+        alt: 'Demonstração da navegação pelo site de aniversário',
       },
     ],
   },

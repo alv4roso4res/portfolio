@@ -18,8 +18,28 @@ let firstRender = true;
 /** Cada navegação recebe um token; renders obsoletos são abortados. */
 let navToken = 0;
 
+/** Rotas cujo preload já foi disparado — o import() em si já é idempotente,
+ *  isso evita só a ida e volta desnecessária ao módulo. */
+const preloaded = new Set<string>();
+
 function resolveRoutePath(pathname: string): string {
   return pathname in routes ? pathname : fallbackRoute;
+}
+
+/** Dispara o carregamento dos módulos da rota sem bloquear quem chamou. */
+function preloadRoute(pathname: string): void {
+  const routePath = resolveRoutePath(pathname);
+  if (preloaded.has(routePath)) return;
+
+  preloaded.add(routePath);
+
+  // uma falha aqui não é fatal: o import() do render tenta de novo
+  void routes[routePath].preload?.().catch(() => preloaded.delete(routePath));
+}
+
+function pathFromRouteAttr(attr: string | null): string | null {
+  if (!attr) return null;
+  return attr === '/' ? '/' : `/${attr}`;
 }
 
 function transitionDuration(): number {
@@ -63,6 +83,10 @@ export async function renderPage() {
   const routePath = resolveRoutePath(window.location.pathname);
   const route = routes[routePath];
 
+  // antes da animação, não depois: os chunks da rota baixam enquanto a página
+  // atual sai de cena, em vez de esperarem a transição terminar
+  preloadRoute(routePath);
+
   if (!firstRender) {
     target.classList.add('is-leaving');
     await waitForTransition(target, transitionDuration());
@@ -90,23 +114,37 @@ export async function renderPage() {
   target.classList.add('is-entering');
   void target.offsetWidth;
 
-  requestAnimationFrame(() => {
+  const reveal = () => {
     if (token !== navToken) return;
     target.classList.remove('is-entering');
-  });
+  };
+
+  // requestAnimationFrame não roda em aba oculta: sem essa saída, o #view
+  // ficaria preso em opacity: 0 com o conteúdo já montado
+  if (document.hidden) {
+    reveal();
+  } else {
+    requestAnimationFrame(reveal);
+  }
 }
 
 function bindNavigation(root: HTMLElement) {
   const links = root.querySelectorAll('a[data-route]');
 
   links.forEach(link => {
+    const path = pathFromRouteAttr(link.getAttribute('data-route'));
+    if (!path) return;
+
+    // aquece o chunk antes do clique: o hover costuma dar algumas centenas de
+    // milissegundos de vantagem, e o toque, o intervalo até o dedo levantar
+    const warm = () => preloadRoute(path);
+    link.addEventListener('mouseenter', warm, { once: true });
+    link.addEventListener('focus', warm, { once: true });
+    link.addEventListener('touchstart', warm, { once: true, passive: true });
+
     link.addEventListener('click', e => {
       e.preventDefault();
 
-      const route = link.getAttribute('data-route');
-      if (!route) return;
-
-      const path = route === '/' ? '/' : `/${route}`;
       if (path === window.location.pathname) return;
 
       history.pushState({}, '', path);
