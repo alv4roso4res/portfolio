@@ -58,7 +58,7 @@ export const projects: Project[] = [
     description:
       'App de acompanhamento de treino com cadastro aberto, em que cada pessoa vê apenas os próprios dados. O registro é feito série a série, com carga, repetições e a comparação com a última vez, e o treino em andamento fica salvo no banco — sair da tela não perde nada. A aba de estatísticas acompanha volume por semana, evolução por exercício e recordes.',
     stack: ['React', 'TypeScript', 'Supabase', 'Vercel'],
-    url: 'https://app-treino.vercel.app/',
+    url: 'https://vibetraining.vercel.app/',
     repo: 'https://github.com/alv4roso4res/app-treino',
     media: [
       {
