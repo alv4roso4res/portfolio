@@ -10,8 +10,6 @@ export async function submitContact(data: ContactFormData) {
     throw new Error('Email inválido');
   }
 
-  // o SDK do Firebase (~430 kB) entra só no envio: importar aqui em vez de no
-  // topo tira esse peso da abertura da página de contato
   const { saveContact } = await import('../db/firebase');
 
   return saveContact(data);
